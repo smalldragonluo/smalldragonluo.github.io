@@ -5,14 +5,15 @@
 <h4 id="什么是_Process-Killer？">什么是 Process-Killer？</h4><p>回到正题，Process-Killer 是一个我编写的 Alfred 插件（其准确的定义应该是 <strong>customised actions</strong>），功能是根据你输入的进程名称或者 PID 或者端口号结束对应进程。</p>
 <p>例如</p>
 <p><img src="https://camo.githubusercontent.com/a2e1ceee9d2199adcca3a9f3118da1682d8cc4a7/68747470733a2f2f696d672e616c6963646e2e636f6d2f7470732f5442314b5545414b465858585861735870585858585858585858582d3538342d3232332e6a7067" alt=""></p>
-<p>如你说见，输入关键字 kill，会进入匹配模式，你可以输入进程名称，PID 或者 -i 端口号，列表会显输出对应的进程，选中并确定，一个进程就将殒命，消失于宇宙的浩瀚之中（我决定以后给他加上一声惨叫，当然这是开玩笑的）。</p>
+<p>如你所见，输入关键字 kill，会进入匹配模式，你可以输入进程名称，PID 或者 -i 端口号，列表会显输出对应的进程，选中并确定，一个进程就将殒命，消失于宇宙的浩瀚之中（我决定以后给他加上一声惨叫，当然这是开玩笑的）。<br>你可能注意到，每个 item 的下方会显示此进程运行的参数，这对于运行多个相同的命令来说是很有帮助的。例如你打开了多个 Node.js 进程，通过这个插件可以很方便地进行区分。</p>
 <h4 id="Install">Install</h4><p>如何安装呢？</p>
 <ol>
 <li>首先查看 <a href="https://github.com/smalldragonluo/process-killer" target="_blank" rel="external">Process-Killer</a> 仓库，下载 <strong>Process Killer.alfredworkflow</strong> 文件</li>
 <li>打开 Alfred 面板，点设置，进入 Workflow，将 <strong>Process Killer.alfredworkflow</strong> 拖入左侧列表，至此，安装完成，就是这么轻松，就是这么简单。</li>
 </ol>
-<h4 id="工作原理">工作原理</h4><p>这个插件使用了 Node.js 作为开发语言，具体工作流程打开 Alfred 面板可以看到（图标好看吗？我画的哦~）：</p>
+<h4 id="工作原理">工作原理</h4><p>这个插件使用了 Node.js 作为开发语言，具体工作流程打开 Alfred 面板可以看到：</p>
 <p><img src="/assets/C6671052-55E6-4EEA-A5EE-FCD9C8D93E17.png" alt=""></p>
+<p>看到这里你肯定会惊讶：『这个图标真他妈好看』。真不好意思，这是我画的，你可以在其他产品中使用这枚图标，这是免费的。</p>
 <h5 id="内容过滤">内容过滤</h5><p>插件的入口是一个 Script Filter，顾名思义，是一个脚本过滤器，用于生成可以显示在面板的内容，出此之外还有 keyword，File Filter 等。</p>
 <p>首先，Script Filter 通过 shell 调用了 Node.js 服务</p>
 <figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">/usr/local/bin/<span class="keyword">node</span><span class="identifier"> </span><span class="title">&lt;&lt;-'CODE</span>'</span><br><span class="line">require(<span class="string">"./processFilter"</span>)(<span class="string">"&#123;query&#125;"</span>);</span><br><span class="line">CODE</span><br></pre></td></tr></table></figure>
