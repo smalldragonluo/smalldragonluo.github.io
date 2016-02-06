@@ -4,7 +4,7 @@
   <subtitle><![CDATA[I'm not single, I'm solo.]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://blog.smalldragonluo.com/"/>
-  <updated>2016-02-06T05:59:36.000Z</updated>
+  <updated>2016-02-06T06:19:40.000Z</updated>
   <id>http://blog.smalldragonluo.com/</id>
   
   <author>
@@ -19,7 +19,7 @@
     <link href="http://blog.smalldragonluo.com/2016/02/05/%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9A%84-JS-%E6%A8%A1%E6%9D%BF%E5%BC%95%E6%93%8E/"/>
     <id>http://blog.smalldragonluo.com/2016/02/05/一个简单的-JS-模板引擎/</id>
     <published>2016-02-05T02:19:25.000Z</published>
-    <updated>2016-02-06T05:59:36.000Z</updated>
+    <updated>2016-02-06T06:19:40.000Z</updated>
     <content type="html"><![CDATA[<blockquote>
 <p>快过年了，需求不饱和，有时间写写博客。</p>
 </blockquote>
@@ -40,8 +40,7 @@
 
 <pre class="J_Result custom-result"></pre>
 
-<h3 id="性能">性能</h3><p>我做了一些测试，结果证明，即便是模板中包含大量复杂的业务逻辑，构建渲染函数过程的性能消耗也是微乎其微的，查看 TimeLine 时间大概在 1 毫秒左右。<br>所以我得出的结论是：</p>
-<p><em>如果你的模板引擎使用原生 JavaScript 语法，并未加入其它预处理，那么你不应当使用离线编译，这造成了请求代码量的增加，却并未带来明显好处，尤其是在移动端等频繁使用原生语法的场景</em>。</p>
+<h3 id="性能">性能</h3><p>我做了一些测试，结果证明，即便是模板中包含大量复杂的业务逻辑，构建渲染函数过程的性能消耗也是微乎其微的，查看 TimeLine 时间大概在 1 毫秒左右。<br>因此可以见得，团队使用离线编译原生 JavaScript 语法的模板，主要是为了自动化、模块化以及安全考虑，而不是性能。</p>
 <style>
   .custom-tpl, .custom-data {
     width: 100%;
