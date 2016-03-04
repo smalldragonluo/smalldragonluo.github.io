@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
   <title><![CDATA[smalldragonluo]]></title>
-  <subtitle><![CDATA[I'm not single, I'm solo.]]></subtitle>
+  <subtitle><![CDATA[不卑不亢就是亢]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://blog.smalldragonluo.com/"/>
-  <updated>2016-02-06T06:19:40.000Z</updated>
+  <updated>2016-03-04T03:46:44.000Z</updated>
   <id>http://blog.smalldragonluo.com/</id>
   
   <author>
@@ -13,6 +13,31 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[「淘宝技术部」内推开始啦~]]></title>
+    <link href="http://blog.smalldragonluo.com/2016/03/04/%E3%80%8C%E6%B7%98%E5%AE%9D%E6%8A%80%E6%9C%AF%E9%83%A8%E3%80%8D%E5%86%85%E6%8E%A8%E5%BC%80%E5%A7%8B%E5%95%A6/"/>
+    <id>http://blog.smalldragonluo.com/2016/03/04/「淘宝技术部」内推开始啦/</id>
+    <published>2016-03-04T03:27:12.000Z</published>
+    <updated>2016-03-04T03:46:44.000Z</updated>
+    <content type="html"><![CDATA[<blockquote>
+<p>贴吧发帖被系统删，只能在这里发了…</p>
+</blockquote>
+<p><strong>阿里巴巴集团2016年春季实习生招聘-内部推荐火热启动！</strong></p>
+<p><img src="http://ww3.sinaimg.cn/large/a26409a6gw1eupjy5o032j20fk07840e.jpg" alt="招聘海报"></p>
+<p>淘宝技术部，是支撑淘宝业务发展的核心研发团队，负责各个细分行业市场、跨境电商、商家运营、生活服务、互动内容及社区等全业务线，以及交易基础平台、内容平台、会员平台、招商平台、营销平台、建站系统等核心业务平台的开发/前端/测试等工作，支撑淘宝双十一/双十二大促的稳定性和高并发业务场景，服务全球几亿用户的吃穿住行消费需求。</p>
+<p>阿里巴巴集团2016实习生招聘官网：<a href="https://campus.alibaba.com/trainNotice.htm" target="_blank" rel="external">https://campus.alibaba.com/trainNotice.htm</a></p>
+<h4 id="内推岗位">内推岗位</h4><p>研发工程师JAVA（杭州/北京）、客户端开发工程师（杭州）、前端开发工程师（杭州/北京）、测试工程师（杭州）、算法工程师（杭州）<br>岗位详情：<a href="https://campus.alibaba.com/traineePositionList.htm" target="_blank" rel="external">https://campus.alibaba.com/traineePositionList.htm</a><br>（注：此处只包含淘宝技术部岗位）</p>
+<h4 id="内推对象">内推对象</h4><p>2017年1月1日及以后毕业的同学（通常为2017届及以后毕业的同学）</p>
+<h4 id="内推时间">内推时间</h4><p>即日起至2016年3月31日</p>
+<h4 id="联系方式">联系方式</h4><p>感兴趣的同学，请把简历发送至我的邮箱（xiaolong.lxl@alibaba-inc.com）QQ：594506262</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[这是一个广告贴]]>
+    
+    </summary>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[一个简单的 JS 模板引擎]]></title>
@@ -496,76 +521,6 @@
       <category term="GitHub" scheme="http://blog.smalldragonluo.com/tags/GitHub/"/>
     
       <category term="前端技术" scheme="http://blog.smalldragonluo.com/categories/%E5%89%8D%E7%AB%AF%E6%8A%80%E6%9C%AF/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[安卓 UC 内核 WebView 调试]]></title>
-    <link href="http://blog.smalldragonluo.com/2015/09/24/%E5%AE%89%E5%8D%93%20UC%20%E5%86%85%E6%A0%B8%20WebView%20%E8%B0%83%E8%AF%95/"/>
-    <id>http://blog.smalldragonluo.com/2015/09/24/安卓 UC 内核 WebView 调试/</id>
-    <published>2015-09-24T07:57:40.000Z</published>
-    <updated>2015-12-06T14:19:03.000Z</updated>
-    <content type="html"><![CDATA[<h3 id="不同的调试方式">不同的调试方式</h3><p>个人的调试方式有这么几种：</p>
-<ol>
-<li>Chrome Emulator</li>
-<li>手机端浏览器调试</li>
-<li>手机端 Chrome + Inspector 调试（或者其他工具）</li>
-<li>客户端 + Inspector 调试</li>
-</ol>
-<p>由于目前的 Chrome Emulator 渲染方式和手机端各浏览器并不是十分一致，因此这种方式适用于前期快速开发原型，在此之后，再转到真机或虚拟机浏览器调试。</p>
-<p>此时此刻你很希望像 PC 那样可以使用 Debugger，高版本的 Chrome 提供了 Inspector ( 桌面端访问 chrome://inspect )，将设备与电脑通过 USB 线连接，并打开移动端 Chrome，可以看到如下所示内容：</p>
-<p><img src="https://img.alicdn.com/tps/TB1lW2jJFXXXXbYXFXXXXXXXXXX-663-335.jpg" alt="chrome inspect界面"></p>
-<p>点击 inspect 即可进行调试</p>
-<h3 id="移动端_WebView_调试">移动端 WebView 调试</h3><p>当你要查看在客户端的真实情况，异常捕获，或者你需要使用 JSBridge，以及其他能力（例如拉出登陆框、分享等），一个真实的环境会为开发带来很多便利。</p>
-<p>参考 UC 浏览器的调试：</p>
-<ol>
-<li>安装 ADB ( 安卓调试桥 )</li>
-<li>安装 APP 开发者版</li>
-<li>访问 UC 内置的 Debug 服务器</li>
-</ol>
-<p>安装 ADB 是为了连接电脑与设备，使用其提供的端口映射功能（将本地端口映射到移动端本地端口），开发者版手淘内部会启动一个调试服务器（当启动WebView），端口为 9998，你可以访问此服务器来调试。</p>
-<p>那么走一遍流程</p>
-<h5 id="1-_安装_ADB">1. 安装 ADB</h5><p>ADB 包含到 Android SDK 里，所以我们先安装 Android SDK，你可以使用 HomeBrew 快速安装 <code>$ brew install android-sdk</code>，或者开启人工智能模式 <a href="http://developer.android.com/sdk/installing/index.html?pkg=tools" target="_blank" rel="external">Android SDK</a></p>
-<blockquote>
-<p>我不确定 ADB 是否需要 JDK（严格来说只有开发阶段才会用到 JDK，如果需要也应该是 JRE 才对），我已经安装了 Java，如果不是拿刀架在我脖子上，我是肯定不会卸载了测试下的，遇到问题的同学可以点这个 <a href="https://www.java.com/" target="_blank" rel="external">Java</a></p>
-</blockquote>
-<p>我使用的 brew 安装，安装完遇到的第一个问题就是 执行 <code>adb</code> 找不到 Platform-tools，原因是 SDK 并未包含 Platform-tools 包，此时你需要 <code>$ open /usr/local/opt/android-sdk</code> 找到 tools 目录下的 android，执行它，会弹出 SDK 管理器，并安装 Platform-tools。</p>
-<p>如果遇到 log 提示 “Failed to fetch URL https://…” 是因为 https 不可用（why?），此时点击工具栏 preferences，勾选 “Force https://… sources to be fetched using http://…” 即可。</p>
-<p>这时执行 <code>$ adb devices</code>，应该可以看到有设备连接了，如果没有，执行</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ adb <span class="operator"><span class="keyword">kill</span>-<span class="keyword">server</span></span><br><span class="line">$ adb <span class="keyword">start</span>-<span class="keyword">server</span></span></span><br></pre></td></tr></table></figure>
-<p>并重新连接 USB</p>
-<h5 id="2-_安装开发者版_APP">2. 安装开发者版 APP</h5><p>略</p>
-<h5 id="3-_开始_Debug">3. 开始 Debug</h5><p>手机打开任意页面，连接设备后，执行 <code>$ adb forward tcp:端口号 tcp:9998</code> 这时访问 127.0.0.1:端口号，会被代理到移动端 127.0.0.1:9998，这时就可以愉快的 Debug 了。</p>
-<p><img src="https://img.alicdn.com/tps/TB16.fEJFXXXXbFXXXXXXXXXXXX-858-243.jpg" alt="debug界面"></p>
-<p>你也可以无线 Debug，移动端连接 WIFI，并连接设备，执行 <code>adb shell ifconfig wlan0</code> 获得设备 IP， 这时可以断开 USB，开始无线调试（你可以权衡下是否需要这么做）。</p>
-<h3 id="Troubleshooting">Troubleshooting</h3><ol>
-<li><p><strong>浏览器一直 pending</strong></p>
-<ul>
-<li>解决方法：彻底清理 APP 后台，重启应用（内置调试服务挂掉了）</li>
-</ul>
-</li>
-<li><p><strong>移动端一直打开页面失败</strong></p>
-<ul>
-<li>试试清理应用缓存，还不行就清理数据（只试了几百次就找到了解决办法）</li>
-</ul>
-</li>
-</ol>
-<h3 id="最佳实践">最佳实践</h3><p>将移动端代理设为localhost:电脑代理端口，并开启 chrome inspect，打开端口映射(port forwarding)，这与 adb 的映射正好反向，是将客户端的本地端口映射到 PC，这时可以使用 PC 的系统代理（你也可以手动输入IP）</p>
-]]></content>
-    <summary type="html">
-    <![CDATA[个人的调试方式有这么几种： 1. Chrome Emulator 2. 手机端浏览器调试 3. 手机端 Chrome + Inspector 调试（或者其他工具） 4. 手淘 + Inspector 调试]]>
-    
-    </summary>
-    
-      <category term="UC" scheme="http://blog.smalldragonluo.com/tags/UC/"/>
-    
-      <category term="WebView" scheme="http://blog.smalldragonluo.com/tags/WebView/"/>
-    
-      <category term="移动端调试" scheme="http://blog.smalldragonluo.com/tags/%E7%A7%BB%E5%8A%A8%E7%AB%AF%E8%B0%83%E8%AF%95/"/>
-    
-      <category term="前端技术" scheme="http://blog.smalldragonluo.com/categories/%E5%89%8D%E7%AB%AF%E6%8A%80%E6%9C%AF/"/>
-    
-      <category term="调试" scheme="http://blog.smalldragonluo.com/categories/%E5%89%8D%E7%AB%AF%E6%8A%80%E6%9C%AF/%E8%B0%83%E8%AF%95/"/>
     
   </entry>
   
