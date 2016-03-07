@@ -61,75 +61,81 @@
 </script>
 
 <script>
-  setTimeout(function() {
+(function tmp(){
+  if(window.$) {
     function Tpl(tpl) {
-      // 关于传递 RegExp https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/String/split
-      var snippet = tpl.split(/(?=<%)|(%>)/);
-      var mCode = [
-        'var _tplSnippet = [];',
-        'with(_tplData) {'
-      ];
+          // 关于传递 RegExp https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/String/split
+          var snippet = tpl.split(/(?=<%)|(%>)/);
+          var mCode = [
+            'var _tplSnippet = [];',
+            'with(_tplData) {'
+          ];
 
-      for (var i = 0; i < snippet.length; ++i) {
-        if (typeof snippet[i] !== 'undefined' && snippet[i] !== '%>') {
-          if (snippet[i].substring(0, 2) === '<%') {
-            // 如果是表达式
-            if (snippet[i].charAt(2) === '=') {
-              mCode.push(snippet[i].replace(/<%=((\s|.)+)/g, '_tplSnippet.push($1);'));
-            } else {
-              // 如果是语句
-              mCode.push(snippet[i].replace(/<%((\s|.)+)/g, '$1'));
+          for (var i = 0; i < snippet.length; ++i) {
+            if (typeof snippet[i] !== 'undefined' && snippet[i] !== '%>') {
+              if (snippet[i].substring(0, 2) === '<%') {
+                // 如果是表达式
+                if (snippet[i].charAt(2) === '=') {
+                  mCode.push(snippet[i].replace(/<%=((\s|.)+)/g, '_tplSnippet.push($1);'));
+                } else {
+                  // 如果是语句
+                  mCode.push(snippet[i].replace(/<%((\s|.)+)/g, '$1'));
+                }
+              } else {
+                // 如果是 html
+                mCode.push('_tplSnippet.push(\'' + snippet[i].replace(/\\/g, '\\\\').replace(/'/g, '\\\'').replace(/\n/g, '\\n') + '\');');
+              }
             }
-          } else {
-            // 如果是 html
-            mCode.push('_tplSnippet.push(\'' + snippet[i].replace(/\\/g, '\\\\').replace(/'/g, '\\\'').replace(/\n/g, '\\n') + '\');');
           }
+
+          mCode.push('}', 'return _tplSnippet.join(\'\');');
+
+          return new Function('_tplData', mCode.join(''));
         }
-      }
 
-      mCode.push('}', 'return _tplSnippet.join(\'\');');
+        $('.J_Tpl').val($('.J_TplStore').html());
+        $('.J_Data').val($('.J_DataStore').html());
 
-      return new Function('_tplData', mCode.join(''));
-    }
+        $('.J_Compile').on('click', function(){
+          if(!JSON) {
+            $('.J_Result').text('你的浏览器没有 JSON 对象，请切换浏览器再试');
+            return;
+          }
 
-    $('.J_Tpl').val($('.J_TplStore').html());
-    $('.J_Data').val($('.J_DataStore').html());
+          var compiler, data, t, cTime, rTime;
 
-    $('.J_Compile').on('click', function(){
-      if(!JSON) {
-        $('.J_Result').text('你的浏览器没有 JSON 对象，请切换浏览器再试');
-        return;
-      }
+          try {
+            t = new Date().getTime();
+            compiler = Tpl($('.J_Tpl').val());
+            cTime = new Date().getTime() - t;
+          } catch(e) {
+            $('.J_Result').text('模板格式错误\n' + e.stack);
+            return;
+          }
 
-      var compiler, data, t, cTime, rTime;
+          try {
+            data = JSON.parse($('.J_Data').val());
+          } catch(e) {
+            $('.J_Result').text('数据格式错误\n' + e.stack);
+            return;
+          }
 
-      try {
-        t = new Date().getTime();
-        compiler = Tpl($('.J_Tpl').val());
-        cTime = new Date().getTime() - t;
-      } catch(e) {
-        $('.J_Result').text('模板格式错误\n' + e.stack);
-        return;
-      }
-
-      try {
-        data = JSON.parse($('.J_Data').val());
-      } catch(e) {
-        $('.J_Result').text('数据格式错误\n' + e.stack);
-        return;
-      }
-
-      try {
-        t = new Date().getTime();
-        var html = compiler(data);
-        rTime = new Date().getTime() - t;
-        $('.J_Result').text('<!-- 创建渲染函数用时：' + cTime + ' ms, 渲染用时：' + rTime + ' ms -->\n' + html);
-      } catch(e) {
-        $('.J_Result').text('渲染错误\n' + e.stack);
-        return;
-      }
-    }).trigger('click');
-  }, 100);
+          try {
+            t = new Date().getTime();
+            var html = compiler(data);
+            rTime = new Date().getTime() - t;
+            $('.J_Result').text('<!-- 创建渲染函数用时：' + cTime + ' ms, 渲染用时：' + rTime + ' ms -->\n' + html);
+          } catch(e) {
+            $('.J_Result').text('渲染错误\n' + e.stack);
+            return;
+          }
+        }).trigger('click');
+  } else {
+    setTimeout(function() {
+      tmp();    
+    }, 16.7);
+  }
+})();
 </script>
 </div><div class="tags"><a href="/tags/JavaScript/">JavaScript</a><a href="/tags/模板引擎/">模板引擎</a><a href="/tags/正则表达式/">正则表达式</a></div><div class="post-nav"><a href="/2016/03/04/「淘宝技术部」内推开始啦/" class="pre"><i class="icon-previous">「淘宝技术部」内推开始啦~</i></a><a href="/2016/01/25/regeneratorRuntime-is-not-defined/" class="next">regeneratorRuntime is not defined<i class="icon-next"></i></a></div><div data-thread-key="2016/02/05/一个简单的-JS-模板引擎/" data-title="一个简单的 JS 模板引擎" data-url="http://blog.smalldragonluo.com/2016/02/05/一个简单的-JS-模板引擎/" class="ds-share flat"><div class="ds-share-inline"><ul class="ds-share-icons-16"><li data-toggle="ds-share-icons-more"><a href="javascript:void(0);" class="ds-more">分享到：</a></li><li><a href="javascript:void(0);" data-service="weibo" class="ds-weibo">微博</a></li><li><a href="javascript:void(0);" data-service="qzone" class="ds-qzone">QQ空间</a></li><li><a href="javascript:void(0);" data-service="qqt" class="ds-qqt">腾讯微博</a></li><li><a href="javascript:void(0);" data-service="wechat" class="ds-wechat">微信</a></li></ul><div class="ds-share-icons-more"></div></div></div><div data-thread-key="2016/02/05/一个简单的-JS-模板引擎/" data-title="一个简单的 JS 模板引擎" data-url="http://blog.smalldragonluo.com/2016/02/05/一个简单的-JS-模板引擎/" data-author-key="1" class="ds-thread"></div></div></div></div><div class="pure-u-1-4"><div id="sidebar"><div class="widget"><div id="search"><form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><input type="hidden" name="sitesearch" value="http://blog.smalldragonluo.com"></form></div></div><div class="widget"><div class="widget-title">分类</div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/UI设计/">UI设计</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/前端技术/">前端技术</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/前端技术/实用工具/">实用工具</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/前端技术/编译/">编译</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/前端技术/计算机/">计算机</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/前端技术/调试/">调试</a></li></ul></li></ul></div><div class="widget"><div class="widget-title">标签</div><div class="tagcloud"></div><a href="/tags/正则表达式/" style="font-size: 15px;">正则表达式</a> <a href="/tags/编译器/" style="font-size: 15px;">编译器</a> <a href="/tags/上下文无关文法/" style="font-size: 15px;">上下文无关文法</a> <a href="/tags/UC/" style="font-size: 15px;">UC</a> <a href="/tags/WebView/" style="font-size: 15px;">WebView</a> <a href="/tags/移动端调试/" style="font-size: 15px;">移动端调试</a> <a href="/tags/样式冲突/" style="font-size: 15px;">样式冲突</a> <a href="/tags/CSS/" style="font-size: 15px;">CSS</a> <a href="/tags/GitHub/" style="font-size: 15px;">GitHub</a> <a href="/tags/论坛/" style="font-size: 15px;">论坛</a> <a href="/tags/NodeBB/" style="font-size: 15px;">NodeBB</a> <a href="/tags/Node-js/" style="font-size: 15px;">Node.js</a> <a href="/tags/CentOS/" style="font-size: 15px;">CentOS</a> <a href="/tags/Redis/" style="font-size: 15px;">Redis</a> <a href="/tags/Nginx/" style="font-size: 15px;">Nginx</a> <a href="/tags/JavaScript/" style="font-size: 15px;">JavaScript</a> <a href="/tags/模板引擎/" style="font-size: 15px;">模板引擎</a> <a href="/tags/语法分析树/" style="font-size: 15px;">语法分析树</a> <a href="/tags/Babel/" style="font-size: 15px;">Babel</a> <a href="/tags/Gulp/" style="font-size: 15px;">Gulp</a> <a href="/tags/jQuery/" style="font-size: 15px;">jQuery</a> <a href="/tags/选择器/" style="font-size: 15px;">选择器</a> <a href="/tags/性能/" style="font-size: 15px;">性能</a> <a href="/tags/字符集/" style="font-size: 15px;">字符集</a> <a href="/tags/字符编码/" style="font-size: 15px;">字符编码</a> <a href="/tags/Alfred/" style="font-size: 15px;">Alfred</a> <a href="/tags/垃圾回收/" style="font-size: 15px;">垃圾回收</a> <a href="/tags/内存泄露/" style="font-size: 15px;">内存泄露</a> <a href="/tags/原型/" style="font-size: 15px;">原型</a> <a href="/tags/继承/" style="font-size: 15px;">继承</a> <a href="/tags/缓动函数/" style="font-size: 15px;">缓动函数</a> <a href="/tags/动画/" style="font-size: 15px;">动画</a> <a href="/tags/位运算/" style="font-size: 15px;">位运算</a> <a href="/tags/box-shadow/" style="font-size: 15px;">box-shadow</a> <a href="/tags/UI设计/" style="font-size: 15px;">UI设计</a></div><div class="widget"><div class="widget-title">最新文章</div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2016/03/04/「淘宝技术部」内推开始啦/">「淘宝技术部」内推开始啦~</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/02/05/一个简单的-JS-模板引擎/">一个简单的 JS 模板引擎</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/01/25/regeneratorRuntime-is-not-defined/">regeneratorRuntime is not defined</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/12/06/浅析语法分析树/">浅析语法分析树</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/12/06/浅析上下文无关文法/">浅析上下文无关文法</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/12/05/Designed By smalldragonluo/">Designed By smalldragonluo</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/12/03/一个编译器的主要流程/">一个编译器的主要流程</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/11/29/Process-Killer 一个 Alfred Workflow/">Process-Killer，an Alfred Workflow</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/11/20/使用 NodeBB 搭建论坛/">使用 NodeBB 搭建论坛</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/11/10/博客迁移/">博客迁移</a></li></ul></div><div class="widget"><div class="comments-title">最近评论</div><ul data-num-items="5" data-show-avatars="0" data-show-time="1" data-show-admin="0" data-excerpt-length="32" data-show-title="1" class="ds-recent-comments"></ul></div><div class="widget"><div class="widget-title">友情链接</div><ul><li><a href="http://taobaofed.org/" title="淘宝前端团队" target="_blank">淘宝前端团队</a></li></ul><ul><li><a href="http://www.cqupt.edu.cn/cqupt/index.shtml" title="重庆邮电大学" target="_blank">重庆邮电大学</a></li></ul></div></div></div></div><div id="footer">© 2015 <a href="/" rel="nofollow">smalldragonluo.</a></div><a id="rocket" href="#top" class="show"></a><script src="/js/jquery.min.js" type="text/javascript"></script>
 <script src="/js/totop.js" type="text/javascript"></script><script src="/js/fancybox.pack.js" type="text/javascript"></script>
