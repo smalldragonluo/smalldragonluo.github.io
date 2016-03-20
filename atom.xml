@@ -35,10 +35,10 @@
   
   <entry>
     <title><![CDATA[Node.js 子进程的使用场景]]></title>
-    <link href="http://blog.smalldragonluo.com/2016/03/13/Node.js%20%E5%AD%90%E8%BF%9B%E7%A8%8B%E7%9A%84%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF/"/>
-    <id>http://blog.smalldragonluo.com/2016/03/13/Node.js 子进程的使用场景/</id>
+    <link href="http://blog.smalldragonluo.com/2016/03/13/Node.js-%E5%AD%90%E8%BF%9B%E7%A8%8B%E7%9A%84%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF/"/>
+    <id>http://blog.smalldragonluo.com/2016/03/13/Node.js-子进程的使用场景/</id>
     <published>2016-03-13T08:19:12.000Z</published>
-    <updated>2016-03-20T13:04:09.000Z</updated>
+    <updated>2016-03-20T13:11:09.000Z</updated>
     <content type="html"><![CDATA[<h3 id="简介">简介</h3><p>child_process 模块为 Node.js 提供了产生子进程的能力，本文将对其中的几种方案分别进行使用场景的讨论。</p>
 <h3 id="方案">方案</h3><h4 id="spawn()">spawn()</h4><p><strong>spawn()</strong> 作为最核心的方法，提供了丰富的配置，足以应对各种场景。child_process 产生子进程的能力来源于 spawn 方法，其它方法都是基于此方法的不同实现。我们先说这个方法。</p>
 <p><strong>child_process.spawn(command[, args][, options])</strong></p>
@@ -62,11 +62,11 @@
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> fs = <span class="built_in">require</span>(<span class="string">'fs'</span>);</span><br><span class="line"><span class="keyword">var</span> childProcess = <span class="built_in">require</span>(<span class="string">'child_process'</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> cp = childProcess.spawn(<span class="string">'/usr/bin/curl'</span>, [<span class="string">'https://img.alicdn.com/任意内容/TB1uq2BIFXXXXbFXpXXXXXXXXXX_!!0-item_pic.jpg'</span>]);</span><br><span class="line"></span><br><span class="line">cp.stdout.pipe(fs.createWriteStream(<span class="string">'/Users/username/Downloads/test.jpg'</span>));</span><br></pre></td></tr></table></figure>
 <h5 id="子进程独立">子进程独立</h5><p>当你希望父进程执行结束退出后，子进程仍可以保持运行，你需要使用到 <code>process.unref()</code> 方法。<br>正常情况下，父进程需要等待子进程执行结束后才能退出，使用 <code>process.unref()</code> 方法会把子进程从父进程的 event loop 中剔除，达到独立运行的效果。<br>但这并不是完全的进程独立，如果父进程未执行结束，键入 <strong>command + C</strong> 会将子进程一并结束。因为 <strong>command + C</strong> 会对整个进程组发送 <strong>SIGINT</strong> 信号，子进程也会捕获这个信号。如需避免这种情况，可以在 <strong>options</strong> 中配置 <strong>detached</strong> 为 <code>true</code>。子进程会运行在独立的进程组与 session 中，成为 leader。从而屏蔽了 <strong>SIGINT</strong> 信号。<br>如果子进程使用了父进程的 IO，调用 <code>unref()</code> 方法会结束子进程，无法达到独立运行的效果。</p>
 <p>例如</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> childProcess = <span class="built_in">require</span>(<span class="string">'child_process'</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> cp = childProcess.spawn(<span class="string">'/Users/smalldragonluo/somewhere/node/bin/node'</span>, [<span class="string">'./index.js'</span>], &#123;</span><br><span class="line">  stdio: <span class="string">'ignore'</span>,</span><br><span class="line">  detached: <span class="literal">true</span></span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">cp.unref();</span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> childProcess = <span class="built_in">require</span>(<span class="string">'child_process'</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> cp = childProcess.spawn(<span class="string">'/Users/smalldragonluo/somewhere/node/bin/node'</span>, [<span class="string">'./index.js'</span>], &#123;</span><br><span class="line">  stdio: <span class="string">'ignore'</span>,</span><br><span class="line">  detached: <span class="literal">true</span></span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">cp.unref();</span><br></pre></td></tr></table></figure>
 <h4 id="exec()">exec()</h4><p>这个方法会产生一个 shell，和 spawn 不同的是，它关注的是执行的结果，而不是过程中的 IO 通信。因此它提供了一个默认最大值为 200 KB 的缓冲区。</p>
 <p><strong>child_process.exec(command[, options][, callback])</strong></p>
 <p>命令的参数与 shell 类似，使用空格分隔。这并不是一个十分安全的操作，如果使用不当，你可能会迎来一个新的人生低谷。可以想到的例子是</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span><br><span class="line"> * 安全地删除一个文件</span><br><span class="line"> * @param dir </span><br><span class="line"> */</span></span><br><span class="line"> <span class="function"><span class="keyword">function</span> <span class="title">rmFileSafely</span>(<span class="params">dir</span>)</span>&#123;</span><br><span class="line">   exec(<span class="string">'rm -rvf '</span> + dir);</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span><br><span class="line"> * 安全地删除一个文件</span><br><span class="line"> * @param dir </span><br><span class="line"> */</span></span><br><span class="line"> <span class="function"><span class="keyword">function</span> <span class="title">rmFileSafely</span>(<span class="params">dir</span>)</span>&#123;</span><br><span class="line">   exec(<span class="string">'rm -rvf '</span> + dir);</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
 <p>如果传入 <code>&#39;/usr /lib/nvidia-current/xorg/xorg&#39;</code>，这就酿成了一出惨剧。你可以改用通过 <strong>Array</strong> 传递参数的方案，例如 <code>execFile()</code>（后面会提到）。</p>
 <p>很多人看到这段代码肯定会情难自控地放到自己电脑上跑一遍，出于人道主义，也为了避免不必要的纠纷，我不建议你这么做。</p>
 <p>如果你曾经遇到 <code>Error: stdout maxBuffer exceeded.</code> 这个错误，说明当前场景并不适合使用 exec 方法。增加 maxBuffer 只是缓兵之计。</p>
@@ -408,8 +408,8 @@
   
   <entry>
     <title><![CDATA[Designed By smalldragonluo]]></title>
-    <link href="http://blog.smalldragonluo.com/2015/12/05/Designed%20By%20smalldragonluo/"/>
-    <id>http://blog.smalldragonluo.com/2015/12/05/Designed By smalldragonluo/</id>
+    <link href="http://blog.smalldragonluo.com/2015/12/05/Designed-By-smalldragonluo/"/>
+    <id>http://blog.smalldragonluo.com/2015/12/05/Designed-By-smalldragonluo/</id>
     <published>2015-12-05T08:24:29.000Z</published>
     <updated>2015-12-05T10:59:55.000Z</updated>
     <content type="html"><![CDATA[<p>这是一款我在大学设计的 APP UI，现在看来，还有许多细节不够好，但毕竟是自己的… 儿子？噢，这个比喻不太好，我其实是想表达：虽然设计平庸，但好歹是一点一滴创造出来的，我应该给他留下回忆。</p>
@@ -488,8 +488,8 @@
   
   <entry>
     <title><![CDATA[Process-Killer，an Alfred Workflow]]></title>
-    <link href="http://blog.smalldragonluo.com/2015/11/29/Process-Killer%20%E4%B8%80%E4%B8%AA%20Alfred%20Workflow/"/>
-    <id>http://blog.smalldragonluo.com/2015/11/29/Process-Killer 一个 Alfred Workflow/</id>
+    <link href="http://blog.smalldragonluo.com/2015/11/29/Process-Killer-%E4%B8%80%E4%B8%AA-Alfred-Workflow/"/>
+    <id>http://blog.smalldragonluo.com/2015/11/29/Process-Killer-一个-Alfred-Workflow/</id>
     <published>2015-11-29T12:39:00.000Z</published>
     <updated>2015-12-06T14:19:03.000Z</updated>
     <content type="html"><![CDATA[<p><a href="https://www.alfredapp.com/" target="_blank" rel="external">Alfred</a> 是一个 Mac 上的效率工具，官网对其的定义是：</p>
