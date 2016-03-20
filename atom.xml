@@ -4,7 +4,7 @@
   <subtitle><![CDATA[不卑不亢就是亢]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://blog.smalldragonluo.com/"/>
-  <updated>2016-03-04T03:51:41.000Z</updated>
+  <updated>2016-03-20T12:55:16.000Z</updated>
   <id>http://blog.smalldragonluo.com/</id>
   
   <author>
@@ -13,6 +13,90 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[Unix-like 系统常用命令笔记]]></title>
+    <link href="http://blog.smalldragonluo.com/2016/03/18/Unix-like-%E7%B3%BB%E7%BB%9F%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E7%AC%94%E8%AE%B0/"/>
+    <id>http://blog.smalldragonluo.com/2016/03/18/Unix-like-系统常用命令笔记/</id>
+    <published>2016-03-18T06:52:06.000Z</published>
+    <updated>2016-03-20T12:55:16.000Z</updated>
+    <content type="html"><![CDATA[<p>Unix-like 系统常用命令笔记</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[Unix-like 系统常用命令笔记]]>
+    
+    </summary>
+    
+      <category term="JavaScript" scheme="http://blog.smalldragonluo.com/tags/JavaScript/"/>
+    
+      <category term="前端技术" scheme="http://blog.smalldragonluo.com/categories/%E5%89%8D%E7%AB%AF%E6%8A%80%E6%9C%AF/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[Node.js 子进程的使用场景]]></title>
+    <link href="http://blog.smalldragonluo.com/2016/03/13/Node.js%20%E5%AD%90%E8%BF%9B%E7%A8%8B%E7%9A%84%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF/"/>
+    <id>http://blog.smalldragonluo.com/2016/03/13/Node.js 子进程的使用场景/</id>
+    <published>2016-03-13T08:19:12.000Z</published>
+    <updated>2016-03-20T13:04:09.000Z</updated>
+    <content type="html"><![CDATA[<h3 id="简介">简介</h3><p>child_process 模块为 Node.js 提供了产生子进程的能力，本文将对其中的几种方案分别进行使用场景的讨论。</p>
+<h3 id="方案">方案</h3><h4 id="spawn()">spawn()</h4><p><strong>spawn()</strong> 作为最核心的方法，提供了丰富的配置，足以应对各种场景。child_process 产生子进程的能力来源于 spawn 方法，其它方法都是基于此方法的不同实现。我们先说这个方法。</p>
+<p><strong>child_process.spawn(command[, args][, options])</strong></p>
+<ul>
+<li><strong>command</strong> &lt;String&gt; 命令</li>
+<li><strong>args</strong> &lt;Array&gt; 字符串参数</li>
+<li><strong>options</strong> &lt;Object&gt; 配置项</li>
+</ul>
+<p>其中，<strong>command</strong> 指的是可执行文件的路径，如果可执行文件处于环境变量 <strong>&#36;PATH</strong> 指向的目录中，则目录可以省略(执行 <code>echo $PATH</code> 查看目录)。 <strong>options</strong> 中以下几个参数需要注意:</p>
+<ul>
+<li><strong>cwd &lt;String&gt;</strong> 工作目录, 虽然你可以通过 <code>process.chdir()</code> 改变工作目录，但仍然建议使用此参数指定，当你提供的服务需要在多个目录切换时，并发访问会造成不可预料的结果。</li>
+<li><strong>stdio &lt;Array&gt; | &lt;String&gt;</strong> 指定标准输入输出与错误，其值主要有 <code>&#39;pipe&#39;</code>、 <code>&#39;ipc&#39;</code>、<code>object &lt;Stream&gt;</code>、<code>fd &lt;Number&gt;</code>、<code>&#39;inherit&#39;</code>、<code>&#39;ignore&#39;</code>。<ul>
+<li>当值为 <code>&#39;pipe&#39;</code>，子进程的的 IO 将会以管道的方式传输(示例稍后给出)，否则，子进程的 IO Stream 为 <code>null</code>。</li>
+<li>当值为 <code>&#39;ipc&#39;</code>，子进程与父进程之间会创建一条 IPC 管道，你可以通过 <code>send()</code> 方法与监听 <code>&#39;message&#39;</code> 事件进行消息与 fd 的传输。</li>
+<li>当值为实现了 <strong>Stream</strong> 接口的对象，子进程 IO 将会与之相对应，例如传递 process.stdin。同样的，传递 File Descriptor 也会被映射为 <strong>Stream</strong> 对象。例如，使用 <code>fs.open()</code> 获取一个文件描述符，或者传递 0、1、2，这分别是当前进程的 stdin，stdout，stderr 的文件描述符。</li>
+<li>当值为 <code>&#39;inherit&#39;</code>，子进程会直接使用当前进程的 IO。例如将子进程的消息打印到父进程中，或者复用父进程的输入流。<br><strong>ignore</strong> 会将子进程的 IO 指向 <code>/dev/null</code>。</li>
+</ul>
+</li>
+</ul>
+<p>例如，下载一个文件：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> fs = <span class="built_in">require</span>(<span class="string">'fs'</span>);</span><br><span class="line"><span class="keyword">var</span> childProcess = <span class="built_in">require</span>(<span class="string">'child_process'</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> cp = childProcess.spawn(<span class="string">'/usr/bin/curl'</span>, [<span class="string">'https://img.alicdn.com/任意内容/TB1uq2BIFXXXXbFXpXXXXXXXXXX_!!0-item_pic.jpg'</span>]);</span><br><span class="line"></span><br><span class="line">cp.stdout.pipe(fs.createWriteStream(<span class="string">'/Users/username/Downloads/test.jpg'</span>));</span><br></pre></td></tr></table></figure>
+<h5 id="子进程独立">子进程独立</h5><p>当你希望父进程执行结束退出后，子进程仍可以保持运行，你需要使用到 <code>process.unref()</code> 方法。<br>正常情况下，父进程需要等待子进程执行结束后才能退出，使用 <code>process.unref()</code> 方法会把子进程从父进程的 event loop 中剔除，达到独立运行的效果。<br>但这并不是完全的进程独立，如果父进程未执行结束，键入 <strong>command + C</strong> 会将子进程一并结束。因为 <strong>command + C</strong> 会对整个进程组发送 <strong>SIGINT</strong> 信号，子进程也会捕获这个信号。如需避免这种情况，可以在 <strong>options</strong> 中配置 <strong>detached</strong> 为 <code>true</code>。子进程会运行在独立的进程组与 session 中，成为 leader。从而屏蔽了 <strong>SIGINT</strong> 信号。<br>如果子进程使用了父进程的 IO，调用 <code>unref()</code> 方法会结束子进程，无法达到独立运行的效果。</p>
+<p>例如</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> childProcess = <span class="built_in">require</span>(<span class="string">'child_process'</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> cp = childProcess.spawn(<span class="string">'/Users/smalldragonluo/somewhere/node/bin/node'</span>, [<span class="string">'./index.js'</span>], &#123;</span><br><span class="line">  stdio: <span class="string">'ignore'</span>,</span><br><span class="line">  detached: <span class="literal">true</span></span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">cp.unref();</span><br></pre></td></tr></table></figure>
+<h4 id="exec()">exec()</h4><p>这个方法会产生一个 shell，和 spawn 不同的是，它关注的是执行的结果，而不是过程中的 IO 通信。因此它提供了一个默认最大值为 200 KB 的缓冲区。</p>
+<p><strong>child_process.exec(command[, options][, callback])</strong></p>
+<p>命令的参数与 shell 类似，使用空格分隔。这并不是一个十分安全的操作，如果使用不当，你可能会迎来一个新的人生低谷。可以想到的例子是</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span><br><span class="line"> * 安全地删除一个文件</span><br><span class="line"> * @param dir </span><br><span class="line"> */</span></span><br><span class="line"> <span class="function"><span class="keyword">function</span> <span class="title">rmFileSafely</span>(<span class="params">dir</span>)</span>&#123;</span><br><span class="line">   exec(<span class="string">'rm -rvf '</span> + dir);</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<p>如果传入 <code>&#39;/usr /lib/nvidia-current/xorg/xorg&#39;</code>，这就酿成了一出惨剧。你可以改用通过 <strong>Array</strong> 传递参数的方案，例如 <code>execFile()</code>（后面会提到）。</p>
+<p>很多人看到这段代码肯定会情难自控地放到自己电脑上跑一遍，出于人道主义，也为了避免不必要的纠纷，我不建议你这么做。</p>
+<p>如果你曾经遇到 <code>Error: stdout maxBuffer exceeded.</code> 这个错误，说明当前场景并不适合使用 exec 方法。增加 maxBuffer 只是缓兵之计。</p>
+<p>因为此方法产生了一个 shell，所以你可以使用 <a href="http://www.tldp.org/LDP/abs/html/io-redirection.html" target="_blank" rel="external">I/O redirection</a>，<a href="http://www.tldp.org/LDP/abs/html/globbingref.html" target="_blank" rel="external">file globbing</a> 等特性。</p>
+<h4 id="execFile()">execFile()</h4><p>此方法与 exec 类似，但并不会产生一个 shell，性能上稍好。</p>
+<p><strong>child_process.execFile(file[, args][, options][, callback])</strong></p>
+<p>命令参数以数组的方式传递，这更加安全。</p>
+<h4 id="fork()">fork()</h4><p>此方法的特点是可以直接传递模块路径，并且可以使用 <strong>execPath</strong> 指定 Node.js 的可执行文件地址，你可以很方便的切换 Node.js 版本。</p>
+<p><strong>child_process.fork(modulePath[, args][, options])</strong></p>
+<p>除此之外，设置 <strong>silent</strong> 为 <code>true</code> 可以使子进程不使用父进程的 IO，世界瞬间清净了，掉根针都听得见。<br>使用 <code>fork()</code> 方法会创建 IPC chanel，这是进程间通信的条件。Cluster 模块就使用此方法创建工作进程。<br>当然，你会发现，不只是 <code>fork()</code> 方法才能够指定 Node.js 的执行路径，但相比 <code>spawn()</code>, <code>fork()</code> 可能会带来更低的因创建进程带来的性能消耗。</p>
+<h3 id="小结">小结</h3><p>那么，应该如何选择这几种方案呢？我们已经知道，子进程 powered by spawn，其它的方法只是不同的实现。<br>当你仅仅希望得到一条命令的执行结果，并且能够预料到结果规模时，你应该使用 <code>exec()</code>，就是那么轻松，就是那么简单。<br>如果场景与 <code>exec()</code> 类似, 并且命令参数由用户指定，那么 <code>execFile()</code> 是个不错的选择。这带来了更少的安全问题，类似 XSS 这种头疼的概念将一去不复返，性能也会更优秀。<br>如果你希望自由切换 Node.js 版本, 并且希望执行的是一个存在的模块，并拥有与进程通信的能力，那你还在等什么？赶紧用 <code>fork()</code> 吧。<br>如果你仍然无法得到满足，那你只能选择 <code>spawn（）</code> 了。</p>
+<h3 id="More">More</h3><ul>
+<li>除了上述几个方法外，还有对应的同步版本，如 <code>spawnSync()</code>、<code>execSync()</code>、<code>execFileSync()</code>，这里就不再讨论。同步版本提供了更佳的编程体验，敲击键盘如丝般顺滑，让人欲仙欲死。如果你没有 IO 阻塞的顾虑，推荐使用同步版本。</li>
+<li>如果你开启了大量的子进程，机器可能会变得十分缓慢，这种现象是正常的，一般宕机都会有这种前兆。每个子进程的创建都会消耗大约 15 MB 的内存空间（tested on my OSX x64），因此，请慎重使用子进程。</li>
+<li>跨平台需要注意的地方，这里并没有提到，例如 <code>spawn()</code> 方法需要指定可执行文件为 <code>&#39;cmd&#39;</code> 等。</li>
+</ul>
+<h3 id="参考">参考</h3><p><a href="https://nodejs.org/api/child_process.html" target="_blank" rel="external">https://nodejs.org/api/child_process.html</a><br><a href="https://www.win.tue.nl/~aeb/linux/lk/lk-10.html" target="_blank" rel="external">https://www.win.tue.nl/~aeb/linux/lk/lk-10.html</a></p>
+]]></content>
+    <summary type="html">
+    <![CDATA[child_process 模块为 Node.js 提供了产生子进程的能力，本文将对其中的几种方案分别进行使用场景的讨论。]]>
+    
+    </summary>
+    
+      <category term="JavaScript" scheme="http://blog.smalldragonluo.com/tags/JavaScript/"/>
+    
+      <category term="Node.js" scheme="http://blog.smalldragonluo.com/tags/Node-js/"/>
+    
+      <category term="前端技术" scheme="http://blog.smalldragonluo.com/categories/%E5%89%8D%E7%AB%AF%E6%8A%80%E6%9C%AF/"/>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[「淘宝技术部」内推开始啦~]]></title>
@@ -448,86 +532,6 @@
       <category term="前端技术" scheme="http://blog.smalldragonluo.com/categories/%E5%89%8D%E7%AB%AF%E6%8A%80%E6%9C%AF/"/>
     
       <category term="实用工具" scheme="http://blog.smalldragonluo.com/categories/%E5%89%8D%E7%AB%AF%E6%8A%80%E6%9C%AF/%E5%AE%9E%E7%94%A8%E5%B7%A5%E5%85%B7/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[使用 NodeBB 搭建论坛]]></title>
-    <link href="http://blog.smalldragonluo.com/2015/11/20/%E4%BD%BF%E7%94%A8%20NodeBB%20%E6%90%AD%E5%BB%BA%E8%AE%BA%E5%9D%9B/"/>
-    <id>http://blog.smalldragonluo.com/2015/11/20/使用 NodeBB 搭建论坛/</id>
-    <published>2015-11-20T14:00:50.000Z</published>
-    <updated>2015-12-06T14:19:39.000Z</updated>
-    <content type="html"><![CDATA[<h3 id="NodeBB">NodeBB</h3><p><a href="https://docs.nodebb.org/en/latest/" target="_blank" rel="external">NodeBB</a> 是一个基于 Node.js 的开源论坛，Metro UI 十分精美，它有以下特点：</p>
-<ul>
-<li>按照类目，标签，最新等进行帖子分类</li>
-<li>MarkDown 支持</li>
-<li>支持 WebSocket 实时推送消息</li>
-<li>强大的后台管理</li>
-<li>多样的皮肤</li>
-<li>哈哈，我就不凑字数了</li>
-</ul>
-<p>虽然不如 <a href="http://www.discuz.net/forum.php" target="_blank" rel="external">Discuz</a> 功能强大，例如，没有验证码，但对于我来说已经够用了。</p>
-<h3 id="ShowCase">ShowCase</h3><p>请访问 <strong><a href="//www.smalldragonluo.com">www.smalldragonluo.com</a></strong></p>
-<h3 id="Install">Install</h3><p>我的 ECS 是放在阿里云，系统为 CentOS 6.5，NodeBB 的安装方式见 <a href="https://docs.nodebb.org/en/latest/installing/os/centos.html" target="_blank" rel="external">Installation by OS » CentOS 6/7</a></p>
-<p>简单来说：</p>
-<ul>
-<li>首先需要安装 <a href="https://nodejs.org" target="_blank" rel="external">Node.js</a>，将编译好的 Node.js 放到环境变量即可</li>
-<li>然后是 <a href="http://redis.io/" target="_blank" rel="external">Redis</a>，我使用的源码安装，你也可以切换成 <a href="https://www.mongodb.org/" target="_blank" rel="external">MongoDB</a>，这也是被支持的</li>
-<li>哈哈，我就不凑字数了，你还是按照官方教程来吧… <a href="https://docs.nodebb.org/en/latest/installing/os/centos.html" target="_blank" rel="external">Installation by OS » CentOS 6/7</a></li>
-</ul>
-<p>请注意查看 NodeBB 的文档，Git 克隆下来后，先改下 NodeBB/install 里面的配置，例如修改页尾，论坛分类等等，你也可以安装后在管理界面修改</p>
-<p>注意在安装 NodeBB 时可能会遇到这个错误：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ error This version of node/NAN/v8 requires a C++<span class="number">11</span> compiler</span><br></pre></td></tr></table></figure>
-<p>原因是目前 CentOS 6.5 的云主机 C++ 编译器版本普遍较低，如你遇到安装时编译 mmmagic 模块报错，请升级 g++ 至 4.8 版本，包含 C++ 11。参考 <a href="http://superuser.com/questions/381160/how-to-install-gcc-4-7-x-4-8-x-on-centos" target="_blank" rel="external">CentOS g++ 4.8 install</a></p>
-<h3 id="建议">建议</h3><ul>
-<li>请修改 Redis 密码以防止外部攻击，或者限制 IP 访问</li>
-<li>增加 Nginx，主要是为了提高静态资源性能，防止 DDos 攻击，负载均衡（就是要这么认真）</li>
-<li>SFTP 我推荐一个 Mac 的软件：<a href="https://cyberduck.io/" target="_blank" rel="external">Cyberduck</a></li>
-</ul>
-<h3 id="吐槽">吐槽</h3><p>NodeBB 通过 node_modules 的方式提供插件，造成静态资源耦合太紧。</p>
-]]></content>
-    <summary type="html">
-    <![CDATA[NodeBB 是一个基于 Node.js 的开源论坛，Metro UI 十分精美，它有以下特点：按照类目，标签，最新等进行帖子分类...]]>
-    
-    </summary>
-    
-      <category term="CentOS" scheme="http://blog.smalldragonluo.com/tags/CentOS/"/>
-    
-      <category term="Nginx" scheme="http://blog.smalldragonluo.com/tags/Nginx/"/>
-    
-      <category term="Node.js" scheme="http://blog.smalldragonluo.com/tags/Node-js/"/>
-    
-      <category term="NodeBB" scheme="http://blog.smalldragonluo.com/tags/NodeBB/"/>
-    
-      <category term="Redis" scheme="http://blog.smalldragonluo.com/tags/Redis/"/>
-    
-      <category term="论坛" scheme="http://blog.smalldragonluo.com/tags/%E8%AE%BA%E5%9D%9B/"/>
-    
-      <category term="前端技术" scheme="http://blog.smalldragonluo.com/categories/%E5%89%8D%E7%AB%AF%E6%8A%80%E6%9C%AF/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[博客迁移]]></title>
-    <link href="http://blog.smalldragonluo.com/2015/11/10/%E5%8D%9A%E5%AE%A2%E8%BF%81%E7%A7%BB/"/>
-    <id>http://blog.smalldragonluo.com/2015/11/10/博客迁移/</id>
-    <published>2015-11-10T06:11:44.000Z</published>
-    <updated>2015-12-06T14:19:03.000Z</updated>
-    <content type="html"><![CDATA[<p>&ensp;&ensp;今天折腾了下 <a href="https://hexo.io/zh-cn/" target="_blank" rel="external">hexo</a>，顺便把博客迁移到 <a href="//blog.smalldragonluo.com">blog.smalldragonluo.com</a>，从今天起就在这里安家啦~</p>
-<p>&ensp;&ensp;服务器是 GitHub Pages，通过 CNAME 解析到 GitHub 服务器，其实对于我这种日 PV 还在个位数的博客来讲，放哪里都一样，而且 GitHub Pages 还慢，唯一的好处大概就是自带版本控制了吧。</p>
-<p><a href="https://hexo.io/zh-cn/" target="_blank" rel="external">hexo</a> 有插件可以一键部署到服务器，因此还是挺方便的。</p>
-<p>&ensp;&ensp;刚把主题换成 <a href="https://www.haomwei.com/technology/maupassant-hexo.html" target="_blank" rel="external">Maupassant</a>，看起来还不错，比较符合我低调奢华的风格。</p>
-<p>&ensp;&ensp;以一句短小精悍的 javascript 代码做结语吧：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(<span class="string">'hello world.'</span>);</span><br></pre></td></tr></table></figure>
-]]></content>
-    <summary type="html">
-    <![CDATA[从今天起就在这里安家啦~]]>
-    
-    </summary>
-    
-      <category term="GitHub" scheme="http://blog.smalldragonluo.com/tags/GitHub/"/>
-    
-      <category term="前端技术" scheme="http://blog.smalldragonluo.com/categories/%E5%89%8D%E7%AB%AF%E6%8A%80%E6%9C%AF/"/>
     
   </entry>
   
