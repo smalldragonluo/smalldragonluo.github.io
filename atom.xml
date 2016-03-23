@@ -338,7 +338,7 @@
     <link href="http://blog.smalldragonluo.com/2015/12/06/%E6%B5%85%E6%9E%90%E8%AF%AD%E6%B3%95%E5%88%86%E6%9E%90%E6%A0%91/"/>
     <id>http://blog.smalldragonluo.com/2015/12/06/浅析语法分析树/</id>
     <published>2015-12-06T14:53:42.000Z</published>
-    <updated>2015-12-26T15:08:52.000Z</updated>
+    <updated>2016-03-23T07:03:58.000Z</updated>
     <content type="html"><![CDATA[<h4 id="语法分析树">语法分析树</h4><p>语法分析树，一般称它为具体语法树，相应的语法称之为该语言的具体语法。语法分析树和产生式相对应，用于展现从文法开始符号推导符号串的过程。<br>语法分析树是一种树形结构，是语法制导翻译中不可缺少的因素。</p>
 <h4 id="节点形式">节点形式</h4><ul>
 <li>树的根节点是文法的开始符号</li>
@@ -355,8 +355,8 @@
 <p><img src="/assets/st.jpg" alt=""></p>
 ]]></content>
     <summary type="html">
-    <![CDATA[<h4 id="语法分析树">语法分析树</h4><p>语法分析树，一般称它为具体语法树，相应的语法称之为该语言的具体语法。语法分析树和产生式相对应，用于展现从文法开始符号推导符号串的过程。<br>语法分析树是一种树形结构，是语法制导翻译中不可缺少的因素。</p>
-<h4 id=]]>
+    <![CDATA[语法分析树，一般称它为具体语法树，相应的语法称之为该语言的具体语法。语法分析树和产生式相对应，用于展现从文法开始符号推导符号串的过程。语法分析树是一种树形结构，是语法制导翻译中不可缺少的因素。]]>
+    
     </summary>
     
       <category term="编译器" scheme="http://blog.smalldragonluo.com/tags/%E7%BC%96%E8%AF%91%E5%99%A8/"/>
@@ -491,7 +491,7 @@
     <link href="http://blog.smalldragonluo.com/2015/11/29/Process-Killer-%E4%B8%80%E4%B8%AA-Alfred-Workflow/"/>
     <id>http://blog.smalldragonluo.com/2015/11/29/Process-Killer-一个-Alfred-Workflow/</id>
     <published>2015-11-29T12:39:00.000Z</published>
-    <updated>2015-12-06T14:19:03.000Z</updated>
+    <updated>2016-03-23T07:03:22.000Z</updated>
     <content type="html"><![CDATA[<p><a href="https://www.alfredapp.com/" target="_blank" rel="external">Alfred</a> 是一个 Mac 上的效率工具，官网对其的定义是：</p>
 <blockquote>
 <p>Alfred is an award-winning app for Mac OS X which boosts your efficiency with hotkeys and keywords. Search your Mac and the web effortlessly, and control your Mac using customised actions with the Powerpack.<br>Alfred 是一个 Mac 上的获奖应用，可以通过快捷键和关键字提高你的效率，除此之外，还可以高效地搜索本地和网络，通过 Powerpack 自定义动作控制你的电脑。</p>
@@ -522,9 +522,8 @@
 <h4 id="参考链接">参考链接</h4><p><a href="https://developer.apple.com/library/prerelease/mac/documentation/Darwin/Reference/ManPages/man1/ps.1.html" target="_blank" rel="external">ps(1) Mac OS X Manual Page</a><br><a href="http://computers.tutsplus.com/tutorials/alfred-workflows-for-advanced-users--mac-60963" target="_blank" rel="external">Alfred Workflows for Advanced Users</a></p>
 ]]></content>
     <summary type="html">
-    <![CDATA[<p><a href="https://www.alfredapp.com/" target="_blank" rel="external">Alfred</a> 是一个 Mac 上的效率工具，官网对其的定义是：</p>
-<blockquote>
-<p>Alfred is an ]]>
+    <![CDATA[Alfred 是一个 Mac 上的获奖应用，可以通过快捷键和关键字提高你的效率，除此之外，还可以高效地搜索本地和网络，通过 Powerpack 自定义动作控制你的电脑。回到正题，Process-Killer 是一个我编写的 Alfred 插件（其准确的定义应该是 **customised actions**），功能是根据你输入的进程名称或者 PID 或者端口号结束对应进程。]]>
+    
     </summary>
     
       <category term="Alfred" scheme="http://blog.smalldragonluo.com/tags/Alfred/"/>
